@@ -1,0 +1,25 @@
+{
+    "name": "mollyapp",
+    "version": "0.0.1",
+    "description": "Molly App for test vue3",
+    "main": "main.js",
+    "scripts": {
+        "dev": "vite"
+    },
+    "author": "nicepig7",
+    "license": "ISC",
+    "dependencies": {
+        "pinia": "^2.1.7",
+        "vue": "^3.4.21",
+        "vue-router": "^4.3.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.12.3",
+        "@vitejs/plugin-vue": "^5.0.4",
+        "rollup-plugin-analyzer": "^4.0.0",
+        "sass": "^1.72.0",
+        "typescript": "^5.4.3",
+        "vite": "^5.2.7",
+        "vue-tsc": "^2.0.7"
+    }
+}

@@ -1,0 +1,6 @@
+// 0. Define layer : reset, base, compo, frame, page
+@use "@style/layer/fdLayer.scss";
+// 1. Reset
+@use "@style/reset";
+// 2. Base
+@use "@style/base";
