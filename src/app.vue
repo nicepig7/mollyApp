@@ -1,5 +1,13 @@
 <template>
-    <div class="molly-app">
-        <h1>Hello Molly</h1>
-    </div>
+<RouterView/>
 </template>
+
+
+<script lang="ts">
+import {defineComponent} from 'vue';
+import {RouterView} from 'vue-router';
+export default defineComponent({
+    name : 'app',
+    components : {RouterView},
+})
+</script>

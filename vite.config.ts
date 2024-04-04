@@ -10,12 +10,17 @@ export default defineConfig({
         alias: {
             '@' : url('src'),
 
-            '@asset': url('src/asset'),
-            '@compo': url('src/compo'),
-            '@frame': url('src/frame'),
-            '@page' : url('src/page'),
+            '@asset' : url('src/asset'),
+            '@compo' : url('src/compo'),
+            '@common': url('src/common'),
+            '@frame' : url('src/frame'),
+            '@page'  : url('src/page'),
+            '@screen': url('src/screen'),
             //---
             '@style' : url('src/asset/style'),
+            //---
+            '$mixin' : url('src/asset/style/inject/fdMixin.scss'),
+            '$token' : url('src/asset/style/inject/fdToken.scss')
         },
     },
     plugins: [
@@ -34,4 +39,4 @@ export default defineConfig({
     }
 });
 
-function url(path) {return fileURLToPath(new URL(path, import.meta.url))}
+function url(path:String) {return fileURLToPath(new URL(path, import.meta.url))}

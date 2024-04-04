@@ -1,0 +1,8 @@
+
+
+@mixin afull($xv:0px, $xh:$xv){
+    top:$xv;
+    bottom:$xv;
+    right:$xh;
+    left:$xh;
+}

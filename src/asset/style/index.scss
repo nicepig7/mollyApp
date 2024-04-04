@@ -1,6 +1,11 @@
 // 0. Define layer : reset, base, compo, frame, page
 @use "@style/layer/fdLayer.scss";
-// 1. Reset
+// 1. Reset : Deprecate browser default style - user agent?
 @use "@style/reset";
-// 2. Base
+// 2. Base : Base style of web
 @use "@style/base";
+// 3. Compo : Common component
+//@use "@style/compo";
+// 4. Frame : Frame set - Default style of system
+@use "@style/frame";
+// 5. page : Page and it's contents
