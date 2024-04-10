@@ -18,7 +18,7 @@
             "@common/*" : ["src/common/*"],
             "@compo/*"  : ["src/compo/*"],
             "@screen/*" : ["src/screen/*"],
-
+            "@page/*"   : ["src/page/*"],
         }
     },
     "include": [

@@ -33,9 +33,6 @@ export default defineConfig({
                 app:  './src/index.html'
             }
         }
-    },
-    server: {
-        open: './src/index.html'
     }
 });
 
