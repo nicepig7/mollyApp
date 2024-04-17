@@ -19,6 +19,10 @@
             "@compo/*"  : ["src/compo/*"],
             "@screen/*" : ["src/screen/*"],
             "@page/*"   : ["src/page/*"],
+
+            "$util"     : ["src/common/util/index.ts"],
+            "$key"      : ["src/common/key/index.ts"],
+            "$service"  : ["src/service/index.ts"],
         }
     },
     "include": [

@@ -1,0 +1,1 @@
+export {screenHome as default} from './fdHome.mixin';

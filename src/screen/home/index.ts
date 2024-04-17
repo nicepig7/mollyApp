@@ -1,1 +1,1 @@
-export {default} from './homeScreen.vue';
+export {default} from './fdHomeScreen.vue';

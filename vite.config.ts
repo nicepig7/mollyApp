@@ -10,17 +10,20 @@ export default defineConfig({
         alias: {
             '@' : url('src'),
 
-            '@asset' : url('src/asset'),
-            '@compo' : url('src/compo'),
-            '@common': url('src/common'),
-            '@frame' : url('src/frame'),
-            '@page'  : url('src/page'),
-            '@screen': url('src/screen'),
+            '@asset'  : url('src/asset'),
+            '@compo'  : url('src/compo'),
+            '@common' : url('src/common'),
+            '@frame'  : url('src/frame'),
+            '@page'   : url('src/page'),
+            '@screen' : url('src/screen'),
             //---
-            '@style' : url('src/asset/style'),
+            '@style'  : url('src/asset/style'),
             //---
-            '$mixin' : url('src/asset/style/inject/fdMixin.scss'),
-            '$token' : url('src/asset/style/inject/fdToken.scss')
+            '$mixin'  : url('src/asset/style/inject/fdMixin.scss'),
+            '$token'  : url('src/asset/style/inject/fdToken.scss'),
+            '$util'   : url('src/common/util/index.ts'),
+            '$key'    : url('src/common/key/index.ts'),
+            '$service': url('src/service/index.ts'),
         },
     },
     plugins: [
