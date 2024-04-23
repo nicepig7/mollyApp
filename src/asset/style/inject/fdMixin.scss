@@ -6,3 +6,8 @@
     right:$xh;
     left:$xh;
 }
+
+
+@mixin v-mid {display:flex;align-items:center;}
+@mixin h-mid {display:flex;justify-content:center;}
+@mixin a-mid {display:flex;align-items:center;justify-content:center;}

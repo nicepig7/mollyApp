@@ -1,4 +1,5 @@
 @use "sass:meta";
 @layer base {
     @include meta.load-css("./fdBase.scss");
+    @include meta.load-css("./fdBase.var.scss");
 }

@@ -2,7 +2,7 @@
 <fdScreen class="home-screen">
     <fdLayout>
         <template #head>
-            <RouterLink to="/home">Header</RouterLink>
+            <headFrame/>
         </template>
         <template #left><leftFrame/></template>
         <template #foot>Footer</template>
@@ -14,10 +14,14 @@
 </template>
 
 <script lang="ts">
+// [IMPORT] Library
 import { defineComponent, provide} from 'vue';
 import { RouterView, RouterLink } from 'vue-router';
+// [IMPORT] Subs
 import screenMenu from './mixin';
 import leftFrame from './left/fdHome.leftFrame.vue';
+import headFrame from './head/fdHome.headFrame.vue';
+// [IMPORT] Utils
 import {infoKey} from '$key';
 
 export default defineComponent({
@@ -27,7 +31,7 @@ export default defineComponent({
         provide(infoKey.screenHome, screen);
         return {screen}
     },
-    components : {leftFrame},
+    components : {leftFrame, headFrame},
     mounted() {
         this.screen.menu.loadMenu();
     }
@@ -37,9 +41,5 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .home-screen {
-    :deep(.fd-layout-head) {background:#FF000033;}
-    :deep(.fd-layout-left) {background:#00FF0033;}
-    :deep(.fd-layout-foot) {background:#0000FF33;}
-    :deep(.fd-layout-body) {background:#FAFAFA;}
 }
-</style>./mixin/homeMixin
+</style>

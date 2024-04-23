@@ -1,6 +1,6 @@
 <template>
 <div class="fd-layout">
-    <div class="fd-layout-head">
+    <div class="fd-layout-head" data-theme="prim">
         <slot name="head"></slot>
     </div>
     <div class="fd-layout-left">
@@ -41,5 +41,13 @@ export default defineComponent({
     .fd-layout-left {position:fixed;top:$hi-head;bottom:$hi-foot;left:0;width:$wi-left;}
     .fd-layout-foot {position:fixed;bottom:0;left:0;right:0;height:$hi-foot;}
     .fd-layout-body {position:fixed;top:$hi-head;bottom:$hi-foot;right:0;width:calc(100vw - $wi-left);}
+    // [LAYOUT] Head frame
+    .fd-layout-head,
+    .fd-layout-left,
+    .fd-layout-foot,
+    .fd-layout-body {
+        background: var(--fd-col-bg);
+        color: var(--fd-col-ft);
+    }
 };
 </style>

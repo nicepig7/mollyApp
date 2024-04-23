@@ -1,0 +1,20 @@
+@use '$token' as token;
+*[data-theme="prim"] {
+    // @see fdBase.var.scss
+    $col-bg : token.$fd-col-primary;
+    $col-ft : #FFF;
+    // Front
+    --fd-col-ft : #{$col-ft};
+    --fd-col-ft-disable : var(--fd-col-ft-light);
+    --fd-col-ft-hover    : color-mix(in srgb, #{token.$fd-col-high-ft} 20%, #{$col-ft});
+    // Background
+    --fd-col-bg          : #{token.$fd-col-primary};
+    //--fd-col-bg-prim     : #{token.$fd-col-primary};
+    --fd-col-bg-disabled : color-mix(in srgb, $col-bg 80%, #FFF);
+    //--fd-col-bg-selected : $fd-col-high-bg;
+    --fd-col-bg-hover    : color-mix(in srgb, #{token.$fd-col-high-bg} 20%, #{$col-ft});
+     //--fd-col-disable : #FAFAFA;
+    // border
+    --fd-col-bd      : #AEAEAE;
+    --fd-col-disable : #c3c3c3;
+}

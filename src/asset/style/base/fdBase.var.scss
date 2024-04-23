@@ -1,0 +1,24 @@
+@use '$token' as token;
+
+:root {
+    $col-bg : #FFF;
+    // Front
+    --fd-col-ft : #333;
+    --fd-col-ft-dimm : #888;
+    --fd-col-ft-light: #aaa;
+    --fd-col-ft-haze : #ccc;
+    --fd-col-ft-inverse : #FFF;
+    --fd-col-ft-disable : var(--fd-col-ft-light);
+    --fd-col-ft-selected: #{token.$fd-col-high-ft};
+    --fd-col-ft-hover   : #{token.$fd-col-high-ft};
+    // Background
+    --fd-col-bg          : #{$col-bg};
+    --fd-col-bg-prim     : #{token.$fd-col-primary};
+    --fd-col-bg-disabled : #FAFAFA;
+    --fd-col-bg-selected : #{token.$fd-col-high-bg};
+    //--fd-col-bg-hover    : #{$col-bg};
+     //--fd-col-disable : #FAFAFA;
+    // border
+    --fd-col-bd      : #AEAEAE;
+    --fd-col-disable : #c3c3c3;
+}
