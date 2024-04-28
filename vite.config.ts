@@ -22,6 +22,7 @@ export default defineConfig({
             '$mixin'  : url('src/asset/style/inject/fdMixin.scss'),
             '$token'  : url('src/asset/style/inject/fdToken.scss'),
             '$util'   : url('src/common/util/index.ts'),
+            '$const'  : url('src/common/const/index.ts'),
             '$key'    : url('src/common/key/index.ts'),
             '$service': url('src/service/index.ts'),
         },

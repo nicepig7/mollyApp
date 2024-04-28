@@ -1,8 +1,9 @@
 // [TYPE] Util, Tree
 declare interface TreeNode {
-    _isRoot ?: Boolean,
-    _isLeaf ?: Boolean,
-    _order  ?: Number,
+    _isRoot ?: boolean,
+    _isLeaf ?: boolean,
+    _order  ?: number,
+    children : Array<MenuNode>
 }
 
 // [TYPE] Util, Tree
@@ -13,10 +14,10 @@ declare interface Args {
 //------------------------------
 // [TYPE] Comm.Menu
 declare interface Menu {
-    key  : String,
-    name : String,
-    pid  ?: String,
-    path ?: String
+    key  : string,
+    name : string,
+    pid  ?: string,
+    path ?: string
 }
 
-declare interface MenuNode extends Menu, Tree {};
+declare interface MenuNode extends Menu, TreeNode {};

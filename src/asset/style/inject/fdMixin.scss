@@ -11,3 +11,14 @@
 @mixin v-mid {display:flex;align-items:center;}
 @mixin h-mid {display:flex;justify-content:center;}
 @mixin a-mid {display:flex;align-items:center;justify-content:center;}
+
+
+@mixin click {
+    & {cursor:pointer;@include nosel;}
+    &:hover {background:var(--fd-col-bg-hover );color:var(--fd-col-ft-hover);}
+    &:active{background:var(--fd-col-bg-active);color:var(--fd-col-ft-active);}
+}
+
+@mixin nosel {
+    user-select: none;
+}

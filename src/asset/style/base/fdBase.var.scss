@@ -11,14 +11,17 @@
     --fd-col-ft-disable : var(--fd-col-ft-light);
     --fd-col-ft-selected: #{token.$fd-col-high-ft};
     --fd-col-ft-hover   : #{token.$fd-col-high-ft};
+    --fd-col-ft-active  : #{token.$fd-col-high-ft};
     // Background
     --fd-col-bg          : #{$col-bg};
     --fd-col-bg-prim     : #{token.$fd-col-primary};
     --fd-col-bg-disabled : #FAFAFA;
-    --fd-col-bg-selected : #{token.$fd-col-high-bg};
-    //--fd-col-bg-hover    : #{$col-bg};
+    --fd-col-bg-selected : color-mix(in srgb, #{token.$fd-col-secundus} 50%, transparent);
+    --fd-col-bg-hover    : color-mix(in srgb, #{token.$fd-col-high-ft} 10%, transparent);
+    --fd-col-bg-active   : color-mix(in srgb, #{token.$fd-col-high-ft} 15%, transparent);
      //--fd-col-disable : #FAFAFA;
     // border
     --fd-col-bd      : #AEAEAE;
-    --fd-col-disable : #c3c3c3;
+    --fd-col-bd-light   : #c3c3c3;
+    --fd-col-bd-disable : #c3c3c3;
 }

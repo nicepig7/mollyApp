@@ -1,0 +1,1 @@
+export {default as fdClickOutside} from './fdDirec.clickOutside';

@@ -21,6 +21,7 @@
             "@page/*"   : ["src/page/*"],
 
             "$util"     : ["src/common/util/index.ts"],
+            "$const"    : ["src/common/const/index.ts"],
             "$key"      : ["src/common/key/index.ts"],
             "$service"  : ["src/service/index.ts"],
         }

@@ -1,17 +1,17 @@
+import {cloneDeep} from 'lodash';
+
 export default {
     // [UTIL] Clone
-    clone(obj:any) {
-        // TODO - DO NOT USE JSON.stringify!!!
-        //    maybe lodash?
-        return JSON.parse(JSON.stringify(obj));
-    },
+    clone: cloneDeep,
     // [UTIL] List to Tree
-    listToTree(list:Array<any>, key='key', pidKey = 'pid', childKey= 'children') {
+    listToTree(list:Array<any>, key='key', pidKey = 'pid') : Array<any&TreeNode> {
         // _isLeaf, _isRoot, _order(?)
-        let tree:Array<any&TreeNode> = [], map = new Map<String, any>();
+        let tree:Array<any&TreeNode> = []
+          , map = new Map<any, any>();
         // 1. Build map;
         list.forEach(item => {
             map.set(item[key], item);
+            item.children = [];
         });
         // 2. Build tree
         list.forEach(item => {
@@ -23,8 +23,8 @@ export default {
             } else {
                 let parent = map.get(pid);
                 parent._isLeaf = false;
-                parent[childKey] = parent[childKey] || [];
-                parent[childKey].push(item);
+                parent.children = parent.children || [];
+                parent.children.push(item);
             };
         })
         return tree;

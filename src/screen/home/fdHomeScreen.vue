@@ -41,5 +41,6 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .home-screen {
+    ::v-deep(.fd-layout-foot) {border-top:1px solid var(--fd-col-bd-light);}
 }
 </style>
