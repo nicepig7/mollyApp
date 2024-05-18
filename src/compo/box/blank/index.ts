@@ -1,0 +1,1 @@
+export {default as fdBlank} from './fdBlank.vue';

@@ -1,6 +1,6 @@
 <template>
 <fdScreen class="home-screen">
-    <fdLayout>
+    <fdLayout :is-collapse="screen.left.isCollapse">
         <template #head>
             <headFrame/>
         </template>
@@ -18,7 +18,7 @@
 import { defineComponent, provide} from 'vue';
 import { RouterView, RouterLink } from 'vue-router';
 // [IMPORT] Subs
-import screenMenu from './mixin';
+import screenMixin from './mixin';
 import leftFrame from './left/fdHome.leftFrame.vue';
 import headFrame from './head/fdHome.headFrame.vue';
 // [IMPORT] Utils
@@ -27,7 +27,7 @@ import {infoKey} from '$key';
 export default defineComponent({
     name : 'homeScreen',
     setup() {
-        let screen = screenMenu();
+        let screen = screenMixin();
         provide(infoKey.screenHome, screen);
         return {screen}
     },

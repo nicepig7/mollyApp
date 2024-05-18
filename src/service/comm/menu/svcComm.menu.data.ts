@@ -5,5 +5,7 @@ export default function() {return [
     {key:'elem.button'   , name: 'Button component'   , pid:'elem', path: '/home/button'},
     {key:'elem.switch'   , name: 'Switch component'   , pid:'elem', path: '/home/switch'},
     {key:'elem.textField', name: 'TextField component', pid:'elem', path: '/home/textField'},
+    {key:'puzzle', name: 'Puzzle', pid:'home'},
+    {key:'elem.button'   , name: 'SSangn'   , pid:'puzzle', path: '/home/ssangn'},
     {key:'dumb', name: 'Dummy Page', pid:'home'},
 ] as Menu[]};

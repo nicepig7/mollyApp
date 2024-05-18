@@ -21,7 +21,8 @@
     --fd-col-bg-active   : color-mix(in srgb, #{token.$fd-col-high-ft} 15%, transparent);
      //--fd-col-disable : #FAFAFA;
     // border
-    --fd-col-bd      : #AEAEAE;
+    --fd-col-bd         : #AEAEAE;
+    --fd-col-bd-prim    : #{token.$fd-col-primary};;
     --fd-col-bd-light   : #c3c3c3;
     --fd-col-bd-disable : #c3c3c3;
 }

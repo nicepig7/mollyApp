@@ -1,2 +1,4 @@
 node_modules
 package-lock.json
+src/page/puzzle/ssangn/data/ssangn.data.prep-*.json
+src/page/puzzle/ssangn/data/ssangn.data.prob.json

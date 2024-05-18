@@ -1,12 +1,13 @@
 import type {App} from 'vue';
-import * as elems from './elem';
+import * as elems  from './elem';
+import * as boxes  from './box';
 import * as frames from './frame';
 
 import * as direces from './directive';
 
 export default {
     install(app:App) {
-        [elems, frames].forEach(compos => {
+        [elems, boxes, frames].forEach(compos => {
             Object.values(compos).forEach(item => {
                 app.component(item.name||'', item)
             });

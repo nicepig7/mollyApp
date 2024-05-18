@@ -1,10 +1,9 @@
 <template>
-<div class="fd-layout">
+<div class="fd-layout" :class="layoutClass">
     <!-- BODY : Keep layer bottom-->
     <div class="fd-layout-body">
         <slot name="body"></slot>
     </div>
-    
     <div class="fd-layout-head" data-theme="prim">
         <slot name="head"></slot>
     </div>
@@ -14,7 +13,6 @@
     <div class="fd-layout-foot">
         <slot name="foot"></slot>
     </div>
-    
 </div>
 </template>
 
@@ -26,7 +24,18 @@ export default defineComponent({
         // type
         // fixed footer
         // no left
+        // [PROP] collapse
+        isCollapse : {type:Boolean, default:false}
+    },
+    computed: {
+        // [COMPUTED] Style, layout class
+        layoutClass() {
+            let clazz : Array<string> = [];
+            if(this.isCollapse) clazz.push('fd-layout--collapsed');
+            return clazz;
+        }
     }
+
 })
 </script>
 
@@ -51,6 +60,11 @@ export default defineComponent({
     .fd-layout-head, .fd-layout-left, .fd-layout-foot, .fd-layout-body {
         background: var(--fd-col-bg);
         color: var(--fd-col-ft);
+    }
+
+    .fd-layout--collapsed {
+        .fd-layout-left {width:$hi-head;}
+        .fd-layout-body {width:calc(100vw - $hi-head);}
     }
 };
 </style>
