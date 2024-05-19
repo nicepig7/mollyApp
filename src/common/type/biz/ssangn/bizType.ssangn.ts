@@ -2,11 +2,13 @@
 declare interface SsangnHistory {
     text   : string,
     score  : number,
-    remain : number
+    remain : number,
+    earned : number
 }
 
 
 declare interface SsangnSuggest {
     text   : string,
-    entropy: number
+    entropy: number,
+    map   ?: number[]
 }

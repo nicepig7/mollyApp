@@ -1,6 +1,6 @@
 <template>
 <div class="fd-button fd-elem" @click="onClick">
-    {{ title }}
+    <slot>{{ title }}</slot>
 </div>
 </template>
 
@@ -8,12 +8,11 @@
 import {defineComponent} from 'vue';
 export default defineComponent({
     name : 'fdButton',
-    computed: {
-        // [COMPUTED] 
-        title() {
-            return "Click me";
-        }
+    props: {
+        title : {type:String},
     },
+    emits : ['click'],
+    computed: {},
     methods : {
         onClick($e:Event) {
             this.$emit('click', $e);
@@ -23,9 +22,14 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@use '$mixin' as mx;
+@use '$token' as tk;
 @layer compo {
     .fd-button {
-        border: 1px solid #ccc;
+        @include mx.click;
+        border: 1px solid var(--fd-col-bd);
+        padding:8px 16px;font-size:16px;
+        border-radius: tk.$fd-rad-md;
     }
 }
 </style>

@@ -1,16 +1,21 @@
 <template>
-    <div class="psg-score psgs">
+    <div class="psg-score psgs" :class="itemClass">
         <div class="psgs-text">{{ text }}</div>
         <div class="psgs-ratio">{{ ratio }}</div>
-        <div class="psgs-bar"></div>
+        <div class="psgs-bar" :title="tooltip"></div>
     </div>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
-import type {PropType} from 'vue'
+import {defineComponent, inject} from 'vue';
+import type {PropType} from 'vue';
+import {infoKey} from '$key';
+import type {SsangnPage} from '@/common/type/fdType.info';
 export default defineComponent({
     name : 'ssangn.scoreItem',
+    setup() {
+        return {pageInfo : inject(infoKey.ssangnPage) as SsangnPage};
+    },
     props: {
         item :{type:Object as PropType<SsangnSuggest>, required:true},
         min : {type:Number, default:0},
@@ -23,10 +28,23 @@ export default defineComponent({
         ratio() {return ~~(+this.item.entropy*10000)/10000;}, // TODO round function -> Util
         // [COMPUTED] Value, entropy ratio(0)
         rpx() {
-            let min = this.min, max = this.max;
-            min -= (max-min)*0.2;
-            return `${(this.ratio - min)/(max-min) * 100}%`;
+            let min = this.min, max = this.max
+              , diff = max-min || 0.01;
+            //min -= (max-min)*0.2;
+            return `${(this.ratio - min)/diff * 100}%`;
         },
+        isTarget() {
+            const {prep} = this.pageInfo;
+            return prep.filterMap.has(this.text);
+        },
+        itemClass() {
+            let clazz = [];
+            if(!this.isTarget) {clazz.push('psg-score--no-target')};
+            return clazz;
+        },
+        tooltip() {
+            return this.item.map?.join(',') || '';
+        }
     }
 })
 </script>
@@ -36,6 +54,7 @@ export default defineComponent({
 @use '$token' as tk;
 // [LAYOUT]
 .psg-score  {@include mx.v-mid;gap:8px;margin-bottom:12px;}
+.psg-score--no-target {opacity:0.6;}
 .psgs-text  {font-size:18px;flex:0 0 40px;}
 .psgs-ratio {font-size:12px;flex:0 0 60px;}
 .psgs-bar   {flex: 1 1 0;}

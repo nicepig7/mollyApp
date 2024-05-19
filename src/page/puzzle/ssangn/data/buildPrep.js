@@ -1,5 +1,5 @@
-const dataList = require('./data.js');
-const fs = require('node:fs');
+const {data : dataList} = require('./data.js');
+//const fs = require('node:fs');
 
 const CHAR_EL_F = [
     'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ',
@@ -37,95 +37,118 @@ const CHAR_EL_T_CPX = new Map([
     ['ㅄ', ['ㅂ','ㅅ']],]);
 const CHAR_FIRST = 44032;//'가'.codePointAt(0);
 const CHAR_LAST  = 55203;//'힣'.codePointAt(0);
-const LEN = 20000;
-let prep = buildPrep(dataList.data.slice(0,LEN));
+const LEN = 20000, DIFF = 1000;
+
+
+const cache1 = new Map();
+const cache2 = new Map();
+const cache  = new Map();
+const cacheV = new Map();
+
+let rating = buildPrep(dataList.slice(0,LEN));
 function buildPrep(list) {
     let _t = new Date().getTime(), _s, _w = _t;
-    let map = list.map((text, idx) => {
-        if(!(idx%200)) {
+    const SUM = list.length, origin = list;
+    let array = origin.map((text, idx) => {
+        if(!(idx%DIFF)) {
             _s = new Date().getTime();
-            console.log(`Build prep' (${idx/200}/${~~(list.length/200)}) - ${_s-_t} msec`);
-            _t = _s;
+            console.log(`Build prep' (${idx/DIFF}/${~~(list.length/DIFF)}) - ${_s-_t} msec (${_s-_w} msec)`);
+            _w = _s;
         }
-        return list.map(target => {
-            //console.log('##', text, target)
-            return compare(text[0], target[0], target[1])*6
-                 + compare(text[1], target[1], target[0]);
-        });
-    });
-    console.log(`time(build) : ${new Date().getTime() - _w} msec`)
-    return map;
-}
 
-
-let _t = new Date().getTime(), _s;
-let diff = ~~(LEN/10000)*1000;
-for(var i=0, ii=prep.length; i*diff < ii; i++) {
-    let path = `./ssangn.data.prep-${i}.json`;
-    console.log('write file :', path, `(${prep.length})`)
-    let split = prep.slice(i*diff,(i+1)*diff);
-    //if(!!split.length) return;
-    console.log('write file :', i*diff, split.length, ii);
-    (function(arr) {
-        let file = fs.createWriteStream(path);
-        file.on('close', ()=>{
-            _s = new Date().getTime();
-            console.log(`write file(${_s-_t} msec) :`, split.length, arr.length);
-            _t = _s;
+        let map = newArray();
+        list.forEach(target => {
+            let score = solve(text, target);
+            map[score]++;
         })
-        file.write('[');
-        arr.forEach(async (line, idx) => {
-            if(idx !== 0) file.write('\n,');
-            file.write(JSON.stringify(line));
-        });
-        file.write(']');
-        file.end();
-    })(split);
+        let entropy = map.reduce((acc, val) => {
+            if(!val) return acc;
+            let p = val/SUM;
+            return acc - p*Math.log2(p);
+        }, 0);
+        return {text, entropy, map};//
+    });
+    return array.sort((x,y) => {
+        let v = y.entropy - x.entropy;
+        if(!!v) return v;
+        return (y.map?.at(0)||0) - (x.map?.at(0)||0);
+    }).slice(0,20);
 }
 
+// OUTPUT
+console.log(rating);
 
 
 
+//----------- LOCAL
+function solve(input, answer) {
+    let subCache = cache.get(input);
+    // 1. Init cache if empty
+    //if(!subCache) {cache.set(input, (subCache = new Map()))};
+    if(0&&subCache.has(answer)) {
+        // 2. Check if has cache?
+        return subCache.get(answer) || 0;
+    } else {
+        let rtn = compare(input[0], answer[0], answer[1]) * 6
+                + compare(input[1], answer[1], answer[0]);
+        //subCache.set(answer, rtn);
+        return rtn;
+    }
+}
 
-
-
-function compare(ch, target, sub) {
-    let chArr = getConsonantVowel(ch);
-    let tgArr = getConsonantVowel(target);
-    let tgFirst = tgArr[0];
+function compare(ch, trg, sub) {
+    let chArr = null
     // 1. Compare with target array
-    // 1.1 Filter n it's length
-    let tgFLen = compareArray(chArr, tgArr);
-    // 1.2 Return by count
-    if(tgFLen === chArr.length && tgFLen === tgArr.length) {
-        return 0;           // 0) 당근
-    } else if(tgFLen > 1) {
-        if(chArr[0] === tgFirst) {
-            return 1;       // 1) 버섯
-        } else {
-            return 2;       // 2) 마늘
+    // 1.0 Cache
+    if(cache1.has(ch+trg)) {
+        return cache1.get(ch+trg) || 0;
+    } else {
+        chArr = chArr || getConsonantVowel(ch);
+        let tgArr = getConsonantVowel(trg);
+        let tgFirst = tgArr[0];
+        // 1.1 Filter n it's length
+        let tgFLen = compareArray(chArr, tgArr);
+        // 1.2 Return by count
+        if(tgFLen === chArr.length && tgFLen === tgArr.length) {
+            cache1.set(ch+trg,0);
+            return 0;           // 0) 당근
+        } else if(tgFLen > 1) {
+            if(chArr[0] === tgFirst) {
+                cache1.set(ch+trg,1);
+                return 1;       // 1) 버섯
+            } else {
+                cache1.set(ch+trg,2);
+                return 2;       // 2) 마늘
+            }
+        } else if(tgFLen === 1) {
+            cache1.set(ch+trg,3);
+            return 3;           // 3) 가지
         }
-    } else if(tgFLen === 1) {
-        return 3;           // 3) 가지
     }
     // 2. Check sub array
-    let sbArr = getConsonantVowel(sub);
-    let sbSet = new Set(sbArr);
-    let sbFArr = chArr.filter(x => sbSet.has(x))
-      , sbFLen = sbFArr.length;
-    if(sbFLen > 0) {
-        return 4;           // 4) 바나나
+    // 2.0 Cache
+    if(cache2.has(ch+sub)) {
+        return cache2.get(ch+sub)||0;
+    } else {
+        chArr = chArr || getConsonantVowel(ch);
+        let sbArr = getConsonantVowel(sub);
+        let sbFLen = compareArray(chArr, sbArr);
+        if(sbFLen > 0) {
+            cache2.set(ch+sub,4);
+            return 4;           // 4) 바나나
+        }
     }
-    return 5;               // 5) 사과
+    cache2.set(ch+sub,5);
+    return 5;                   // 5) 사과
 }
 
 function compareArray(source, target){
-    let cnt = 0;
+    let cnt = 0, tClone = target.slice(0,target.length);
     for(var i=0, ii=source.length; i<ii ; i++ ){
-        for(var j=0, jj=target.length; j<jj; j++) {
-            if(source[i] === target[i]) {
+        for(var j=0, jj=tClone.length; j<jj; j++) {
+            if(source[i] === tClone[j]) {
                 cnt++;
-                target[i] = '';
+                tClone[j] = null;
                 break;
             }
         }
@@ -135,7 +158,10 @@ function compareArray(source, target){
 
 
 
-function getConsonantVowel(ch){
+function getConsonantVowel(ch) {
+    if(cacheV.has(ch)) {
+        return cacheV.get(ch) || [];
+    }
     // 1. Getting code
     let code = ch.codePointAt(0);
     if(!code) return [];
@@ -157,5 +183,12 @@ function getConsonantVowel(ch){
     if(!!cptx) {rtn.push(...cptx)}
     else {rtn.push(cht)}
     // x. Return
+    cacheV.set(ch, rtn);
+    return rtn;
+}
+
+function newArray(len=36){
+    let rtn = [];
+    for(var i=0, ii=len;i<ii;i++) {rtn[i]=0;}
     return rtn;
 }

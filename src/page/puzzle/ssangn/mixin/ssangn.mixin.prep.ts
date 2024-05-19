@@ -1,81 +1,86 @@
 import {ref} from 'vue';
 import {solve} from './ssangn.mixin.cmpr';
+import dataList from '../data/ssangn.data.list';
 
 const INIT_RATING : SsangnSuggest[] = [
-    {text:'공상', entropy:3.831380253509962},
-    {text:'공장', entropy:3.8261608682919928},
-    {text:'송장', entropy:3.8145285944115335},
-    {text:'종상', entropy:3.8139378497466887},
-    {text:'간장', entropy:3.8026939881867383},
-    {text:'공산', entropy:3.7954950979164166},
-    {text:'곤장', entropy:3.789623358274956},
-    {text:'산장', entropy:3.7804635023494226},
-    {text:'종강', entropy:3.7750239374487244},
-    {text:'동상', entropy:3.7740454699428914},
-    {text:'동장', entropy:3.7689058598425884},
-    {text:'인상', entropy:3.7675590361857543},
-    {text:'공방', entropy:3.7654350577456315},
-    {text:'인장', entropy:3.7634203091628624},
-    {text:'반상', entropy:3.7626715766125636},
-    {text:'몽상', entropy:3.760337222682463},
-    {text:'온상', entropy:3.759500060830515},
-    {text:'산정', entropy:3.75899423660922},
-    {text:'동산', entropy:3.756676326649542},
-    {text:'잔상', entropy:3.7556088110070114}];
+    { text: '관원', entropy: 4.086432993532524 },
+    { text: '관장', entropy: 4.030532978485395 },
+    { text: '관상', entropy: 4.027701712900873 },
+    { text: '간원', entropy: 4.019291323876135 },
+    { text: '관망', entropy: 4.006440269647233 },
+    { text: '관성', entropy: 4.004203081024033 },
+    { text: '광원', entropy: 3.9993176017550303 },
+    { text: '관종', entropy: 3.991050852316088 },
+    { text: '낙원', entropy: 3.975513718221052 },
+    { text: '환원', entropy: 3.974488601123755 },
+    { text: '관중', entropy: 3.9742947576954237 },
+    { text: '관운', entropy: 3.9689283278617022 },
+    { text: '강원', entropy: 3.963668585641588 },
+    { text: '감원', entropy: 3.9564341341453546 },
+    { text: '만원', entropy: 3.9561584917774124 },
+    { text: '외관', entropy: 3.9503804554777475 },
+    { text: '왕권', entropy: 3.946381004776951 },
+    { text: '간언', entropy: 3.9419684561036954 },
+    { text: '공원', entropy: 3.94078048721497 },
+    { text: '황권', entropy: 3.9391483062333386 }
+]; // update 2024-05-19
 
 export function usePreparation() {
     // [DATA] 
     //    CAUTION! will be empty until first match
-    const filtered = ref([] as string[]);
-    const prepMap  = ref([[]] as number[][]); // skip calc at first
-    const probMap  = ref([[]] as number[][]); // skip calc at first
+    let filtered = ref([] as string[]);
+    let filterMap = ref(new Set<string>());
     const rating   = ref([] as SsangnSuggest[]);
     // [METHOD]
     function init(list:string[]) {
         filtered.value = list;
-        prepMap.value = [];
-        probMap.value = [];
+        //prepMap.value = [];
+        //probMap.value = [];
         rating.value = INIT_RATING;
+        console.log('Initialize ', list.length)
     }
     function buildNext(text:string, score:number) {
-        filterList(text, score);
-        buildPrep();
-        buildProb();
-        buildSugg();
+        let _t = getTime(), _s = _t, _w = _t;
+        let list = filterList(text, score);
+        _s = getTime();console.log('1. filter', `${_s-_t}msec (${_s-_w}msec)`);_w = _s;
+        let sugg = buildPrep(list, dataList);
+        _s = getTime();console.log('2. prep/prob/sugg', `${_s-_t}msec (${_s-_w}msec)`);_w = _s;
+        // set!
+        filtered.value = list;
+        rating.value = sugg;
+        function getTime() {return new Date().getTime();}
     }
     function filterList(text:string, score:number) {
-        filtered.value = filtered.value.filter(next => solve(text, next) === score);
-    }
-    function buildPrep() {
-        prepMap.value = filtered.value.map(text => {
-            return filtered.value.map(target => solve(text, target));
+        let list = filtered.value.filter(next => {
+            let val = solve(text, next);
+            return val === score;
         });
+        filterMap.value = new Set(list);
+        return list;
     }
-    function buildProb() {
-        probMap.value = prepMap.value.map(line => {
-            let lineArray = newArray();
-            line.forEach(x => lineArray[x]++);
-            return lineArray;
-        });
-    }
-    function buildSugg() {
-        const SUM = filtered.value.length;
-        let array : SsangnSuggest[] = probMap.value.map((x, i) => {
-            let sum = 0;
-            x.forEach(v => {
-                if(!v) return;
-                let ratio = v/SUM;
-                let entropy = -Math.log2(ratio)
-                sum += ratio*entropy;
+    function buildPrep(list:string[], origin:string[]) {
+        const SUM = list.length;
+        let array = origin.map((text) => {
+            let map = newArray();
+            list.forEach(target => {
+                let score = solve(text, target);
+                map[score]++;
             })
-            return {text: filtered.value[i], entropy : sum};
+            let entropy = map.reduce((acc, val) => {
+                if(!val) return acc;
+                let p = val/SUM;
+                return acc - p*Math.log2(p);
+            }, 0);
+            return {text, entropy, map} as SsangnSuggest;
         });
-        array = array.sort((x,y) => y.entropy - x.entropy);
-        array = array.slice(0,20);
-        array.forEach((x,i) => console.log(x)); //?
-        rating.value = array; 
+
+        return array.sort((x,y) => {
+            let v = y.entropy - x.entropy;
+            if(!!v) return v;
+            return (y.map?.at(0)||0) - (x.map?.at(0)||0);
+        }).slice(0,20);
     }
-    return {filtered, prepMap, rating, init, buildNext};
+    return {filtered, filterMap, rating, init, buildNext};
 }
 
 

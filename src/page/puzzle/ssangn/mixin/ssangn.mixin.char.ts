@@ -37,7 +37,13 @@ const CHAR_EL_T_CPX = new Map([
 const CHAR_FIRST = 44032;//'가'.codePointAt(0);
 const CHAR_LAST  = 55203;//'힣'.codePointAt(0);
 
-export function getConsonantVowel(ch:String){
+const cache = new Map<string, string[]>();
+
+export function getConsonantVowel(ch:string) {
+    if(cache.has(ch)) {
+        return cache.get(ch) || [];
+    }
+
     // 1. Getting code
     let code = ch.codePointAt(0);
     if(!code) return [];
@@ -59,8 +65,12 @@ export function getConsonantVowel(ch:String){
     if(!!cptx) {rtn.push(...cptx)}
     else {rtn.push(cht)}
     // x. Return
+
+    cache.set(ch, rtn);
+//     if(ch==='왓') console.log(rtn)
     return rtn;
 }
 
 
-export default {CHAR_EL, CHAR_EL_F, CHAR_EL_S, CHAR_EL_T, getConsonantVowel}
+export default {CHAR_EL, CHAR_EL_F, CHAR_EL_S, CHAR_EL_T
+        , getConsonantVowel}
